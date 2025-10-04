@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세계 국가 선택</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <h1>세계 주요 국가 선택</h1>
+      <p>마음에 드는 국가 카드를 눌러 간단한 소개를 확인해 보세요.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="grid" id="country-grid" aria-label="국가 목록"></section>
+  </main>
+
+  <aside class="panel hidden" id="detail-panel" aria-live="polite" tabindex="-1">
+    <button class="panel__close" id="close-panel" aria-label="설명 닫기">×</button>
+    <img class="panel__flag" id="detail-flag" alt="">
+    <h2 class="panel__name" id="detail-name"></h2>
+    <p class="panel__description" id="detail-description"></p>
+  </aside>
+
+  <div class="panel__backdrop hidden" id="panel-backdrop"></div>
+
+  <footer class="footer">
+    <small>이미지는 <a href="https://flagcdn.com/" target="_blank" rel="noopener">FlagCDN</a>과 <a href="https://unsplash.com/" target="_blank" rel="noopener">Unsplash</a>에서 제공됩니다.</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
