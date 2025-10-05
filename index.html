@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hearts of Iron - United States</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f0e4cc;
+      --ink: #2a1d14;
+      --accent: #8c6746;
+      --accent-dark: #5a4029;
+      --shadow: rgba(48, 33, 22, 0.25);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      background: radial-gradient(circle at top, #d3c0a0 0%, #aa8c66 45%, #5c4934 100%);
+      font-family: "Libre Baskerville", "Times New Roman", serif;
+      color: var(--ink);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("https://www.transparenttextures.com/patterns/old-wall.png");
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .country-panel {
+      position: relative;
+      width: min(960px, 94vw);
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 36px;
+      padding: 40px 48px;
+      background: var(--paper);
+      border: 3px double var(--accent-dark);
+      border-radius: 14px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+      isolation: isolate;
+    }
+
+    .country-panel::before,
+    .country-panel::after {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(92, 73, 52, 0.35);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .country-panel::after {
+      inset: 18px;
+      border-style: dashed;
+      border-color: rgba(102, 78, 53, 0.35);
+    }
+
+    .left-column,
+    .right-column {
+      display: grid;
+      gap: 28px;
+    }
+
+    .flag-card,
+    .leader-card,
+    .spirit-card {
+      position: relative;
+      padding: 26px;
+      background: #f7eedb;
+      border: 1px solid rgba(96, 72, 48, 0.6);
+      border-radius: 10px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 24px var(--shadow);
+    }
+
+    h1,
+    h2,
+    h3,
+    .section-title {
+      font-family: "Crimson Pro", "Garamond", serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0;
+      color: var(--accent-dark);
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .flag {
+      width: 100%;
+      display: block;
+      border: 3px solid rgba(58, 41, 28, 0.5);
+      border-radius: 4px;
+      filter: saturate(0.85);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .leader {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .leader img {
+      width: 110px;
+      height: 138px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 2px solid rgba(58, 41, 28, 0.5);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .leader .info span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.95rem;
+      color: rgba(58, 41, 28, 0.75);
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      border-bottom: 1px solid rgba(92, 73, 52, 0.35);
+      padding-bottom: 10px;
+    }
+
+    .national-spirit {
+      display: grid;
+      gap: 20px;
+    }
+
+    .spirit-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .spirit-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, rgba(213, 189, 148, 0.9), rgba(125, 94, 64, 0.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.45), inset 0 -2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .tooltip-target {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      transform: translate(-50%, -12px);
+      width: max-content;
+      min-width: 240px;
+      max-width: 320px;
+      padding: 14px 18px;
+      background: #312116;
+      color: #f8f1e3;
+      font-family: "Libre Baskerville", "Times New Roman", serif;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      border-radius: 8px;
+      border: 1px solid rgba(248, 241, 227, 0.4);
+      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: #312116 transparent transparent transparent;
+    }
+
+    .tooltip-target:hover .tooltip,
+    .tooltip-target:focus-within .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -20px);
+    }
+
+    @media (max-width: 900px) {
+      .country-panel {
+        grid-template-columns: 1fr;
+        padding: 32px 28px;
+      }
+
+      .leader {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .tooltip {
+        left: 50%;
+        transform: translate(-50%, -12px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="country-panel">
+    <div class="left-column">
+      <section class="flag-card tooltip-target">
+        <h1>미국</h1>
+        <img
+          class="flag"
+          src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
+          alt="미국 국기"
+        />
+        <div class="tooltip">북미 대륙의 강대국, 자유와 민주주의의 상징. 광대한 산업력과 풍부한 자원을 지닌 국가입니다.</div>
+      </section>
+
+      <section class="leader-card tooltip-target">
+        <div class="leader">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/1/10/FD_Roosevelt_1933_Color_Portrait.jpg"
+            alt="프랭클린 D. 루스벨트"
+          />
+          <div class="info">
+            <h2>프랭클린 D. 루스벨트</h2>
+            <span>국가원수 · 민주주의</span>
+          </div>
+        </div>
+        <div class="tooltip">대공황의 혼란 속에서도 뉴딜 정책을 추진하며 국민을 결집시키는 지도자. 전쟁의 먹구름에 맞서 동맹을 다지고 있습니다.</div>
+      </section>
+    </div>
+
+    <div class="right-column">
+      <header class="tooltip-target">
+        <div class="section-title">국민 정신</div>
+        <div class="tooltip">미국의 국민정신은 산업력, 자유의 정신, 전략적 위치를 토대로 전쟁 수행 능력을 강화합니다.</div>
+      </header>
+
+      <div class="national-spirit">
+        <article class="spirit-card tooltip-target">
+          <div class="icon">⚙️</div>
+          <div>
+            <h3>군수산업의 거인</h3>
+          </div>
+          <div class="tooltip">압도적인 생산 능력으로 무기 생산량 +15%, 군수 공장 건설 속도 +10%. 미국의 공장은 세계의 병기창입니다.</div>
+        </article>
+
+        <article class="spirit-card tooltip-target">
+          <div class="icon">🗽</div>
+          <div>
+            <h3>자유의 수호자</h3>
+          </div>
+          <div class="tooltip">민주주의 방어 의지로 정치력 +15%, 외교 관계 개선 +20%. 자유의 여신상이 전 세계에 비추는 빛입니다.</div>
+        </article>
+
+        <article class="spirit-card tooltip-target">
+          <div class="icon">🚢</div>
+          <div>
+            <h3>두 대양의 방벽</h3>
+          </div>
+          <div class="tooltip">태평양과 대서양을 아우르는 함대 운용 능력. 해군 경험치 획득 +20%, 함대 조직력 +10%로 양대양을 지배합니다.</div>
+        </article>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
